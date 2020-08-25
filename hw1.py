@@ -89,7 +89,7 @@ def get_entropy(data):
 	setosa = 0
 	virginica = 0
 	total = 0
-	for i in data.labels:
+	for i in range(len(data.labels)):
 			if data.labels[i] == "Iris-versicolor":
 				versicolor+=1
 			elif data.labels[i] == "Iris-setosa":
@@ -111,7 +111,7 @@ def find_best_threshold(data, feature):
 		flist = data.feature3
 	elif feature == 4:
 		flist = data.feature4
-	for i in flist:
+	for i in range(len(flist)):
 		split = flist[i]
 		split1, split2 = split_data(data, feature, split)
 		entropy1 = get_entropy(split1)
@@ -162,7 +162,7 @@ def c45helper(data, treein):
 	return treein
 
 def getPrediction(data):
-	for i in data.labels:
+	for i in range(len(data.labels)):
 			if data.labels[i] == "Iris-versicolor":
 				versicolor+=1
 			elif data.labels[i] == "Iris-setosa":
@@ -185,7 +185,7 @@ def test(data, tree):
 	# TODO: given data and a constructed tree - return a list of strings (predicted label for every example in the data)
 	point = []
 	predictions = []
-	for i in data.feature:
+	for i in range(len(data.feature)):
 		point[0] = data.feature1[i]
 		point[1] = data.feature2[i]
 		point[2] = data.feature3[i]
