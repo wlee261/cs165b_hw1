@@ -21,22 +21,7 @@ class Data:
 
 ###################################################################
 
-def main():
-	usetree = Tree()
-	traininglist = []
-	testinglist = []
-	trainingdata = Data()
-	testingdata = Data()
-	trainingdata = read_data("hw1_train.txt")
-	testingdata = read_data("hw1_test.txt")
-	usetree = c45(trainingdata)
-	testinglist = test(testingdata, usetree)
-	for i in range(len(testinglist)):
-		print(testinglist[i])
 
-
-if __name__ == "__main__":
-	main()
 
 def read_data(txt_path):
 	# TODO: function that will read the .txt file and store it in the data structure
@@ -210,4 +195,20 @@ def test(data, tree):
 	return predictions
 ###################################################################
 
+def main():
+	usetree = Tree()
+	traininglist = []
+	testinglist = []
+	trainingdata = Data()
+	testingdata = Data()
+	trainingdata = read_data("hw1_train.txt")
+	testingdata = read_data("hw1_test.txt")
+	usetree = c45(trainingdata)
+	testinglist = test(testingdata, usetree)
+	for i in range(len(testinglist)):
+		print(testinglist[i])
+
+
+if __name__ == "__main__":
+	main()
 
