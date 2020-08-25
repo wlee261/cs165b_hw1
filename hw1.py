@@ -35,7 +35,7 @@ def read_data(txt_path):
 		data.feature2.append(line_in_traininglist[1])
 		data.feature3.append(line_in_traininglist[2])
 		data.feature4.append(line_in_traininglist[3])
-		data.labels.append(line_in_traininglist[4])
+		data.labels.append(line_in_traininglist[4].rstrip())
 
 	return data
 
@@ -97,6 +97,12 @@ def get_entropy(data):
 			elif data.labels[i] == "Iris-viginica":
 				virginica+=1
 	total = versicolor + setosa + virginica
+	if versicolor == 0:
+		versicolor = 1
+	if setosa == 0:
+		setosa = 1
+	if virginica == 0:
+		virginica = 1
 	entropy = -(versicolor/total*log(versicolor/total, 2) + setosa/total*log(setosa/total, 2) + virginica/total*log(virginica/total, 2))
 	return entropy
 
@@ -116,10 +122,10 @@ def find_best_threshold(data, feature):
 		split1, split2 = split_data(data, feature, split)
 		entropy1 = get_entropy(split1)
 		entropy2 = get_entropy(split2)
-		entropytot = get_entropy(data.labels)
+		entropytot = get_entropy(data)
 
-		total = len(split1) + len(split2)
-		gain = entropytot - (len(split1)/total*entropy1 + len(split2)/total*entropy2)
+		total = len(split1.labels) + len(split2.labels)
+		gain = entropytot - (len(split1.labels)/total*entropy1 + len(split2.labels)/total*entropy2)
 
 		if gain > best_gain:
 			best_gain = gain
@@ -199,15 +205,21 @@ def main():
 	usetree = Tree()
 	traininglist = []
 	testinglist = []
+	print("1")
 	trainingdata = Data()
 	testingdata = Data()
 	trainingdata = read_data("hw1_train.txt")
 	testingdata = read_data("hw1_test.txt")
+	print("2")
 	usetree = c45(trainingdata)
+	print("3")
 	testinglist = test(testingdata, usetree)
+	print("4")
+
 	for i in range(len(testinglist)):
 		print(testinglist[i])
-
+	#for i in trainingdata.labels:
+	#	print(i)
 
 if __name__ == "__main__":
 	main()
