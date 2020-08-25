@@ -62,7 +62,7 @@ def split_data(data, feature, threshold):
 		flist = data.feature3
 	elif feature == 4:
 		flist = data.feature4
-	for x in flist:
+	for x in range(len(flist)):
 		if flist[x] < threshold:
 			leftdata.labels.append(data.labels[x])
 			leftdata.feature1.append(data.feature1[x])
