@@ -1,5 +1,5 @@
 from math import log
-import numpy as np
+#import numpy as np
 from time import time
 from collections import Counter
 import sys
@@ -21,25 +21,42 @@ class Data:
 
 ###################################################################
 
+def main():
+	usetree = Tree()
+	traininglist = []
+	testinglist = []
+	trainingdata = Data()
+	testingdata = Data()
+	trainingdata = read_data("hw1_train.txt")
+	testingdata = read_data("hw1_test.txt")
+	usetree = c45(trainingdata)
+	testinglist = test(testingdata, usetree)
+	for i in range(len(testinglist)):
+		print(testinglist[i])
+
+
+if __name__ == "__main__":
+	main()
+
 def read_data(txt_path):
 	# TODO: function that will read the .txt file and store it in the data structure
 	# use the Data class defined above to store the information
 	data = Data()
 	training_file = open(txt_path,'r')
-	traininglist = days_file.readlines()
+	traininglist = training_file.readlines()
 	for i in traininglist:
 		line_in_traininglist = traininglist[i].split(",")
-		feature1.append(line_in_traininglist[0])
-		feature2.append(line_in_traininglist[1])
-		feature3.append(line_in_traininglist[2])
-		feature4.append(line_in_traininglist[3])
-		labels.append(line_in_traininglist[4])
+		data.feature1.append(line_in_traininglist[0])
+		data.feature2.append(line_in_traininglist[1])
+		data.feature3.append(line_in_traininglist[2])
+		data.feature4.append(line_in_traininglist[3])
+		data.labels.append(line_in_traininglist[4])
 
 	return data
 
 def predict(tree, point):
 	# TODO: function that should return a prediction for the specific point (predicted label)
-	if tree.leaf = false:
+	if tree.leaf == False:
 		if point[tree.feature] < tree.threshold:
 			return predict(tree.left, point)
 		elif point[tree.feature] >= tree.threshold:
@@ -61,24 +78,24 @@ def split_data(data, feature, threshold):
 	elif feature == 4:
 		flist = data.feature4
 	for x in flist:
-		if flist[x] < split:
-			leftdata.labels.append(labels[x])
-			leftdata.features1.append(data.feature1[x])
-			leftdata.features2.append(data.feature2[x])
-			leftdata.features3.append(data.feature3[x])
-			leftdata.features4.append(data.feature4[x])
-		elif flist[x] > split:
-			rightdata.labels.append(labels[x])
-			rightdata.features1.append(data.feature1[x])
-			rightdata.features2.append(data.feature2[x])
-			rightdata.features3.append(data.feature3[x])
-			rightdata.features4.append(data.feature4[x])
-		elif flist[x] == split:
-			rightdata.labels.append(labels[x])
-			rightdata.features1.append(data.feature1[x])
-			rightdata.features2.append(data.feature2[x])
-			rightdata.features3.append(data.feature3[x])
-			rightdata.features4.append(data.feature4[x])
+		if flist[x] < threshold:
+			leftdata.labels.append(data.labels[x])
+			leftdata.feature1.append(data.feature1[x])
+			leftdata.feature2.append(data.feature2[x])
+			leftdata.feature3.append(data.feature3[x])
+			leftdata.feature4.append(data.feature4[x])
+		elif flist[x] > threshold:
+			rightdata.labels.append(data.labels[x])
+			rightdata.feature1.append(data.feature1[x])
+			rightdata.feature2.append(data.feature2[x])
+			rightdata.feature3.append(data.feature3[x])
+			rightdata.feature4.append(data.feature4[x])
+		elif flist[x] == threshold:
+			rightdata.labels.append(data.labels[x])
+			rightdata.feature1.append(data.feature1[x])
+			rightdata.feature2.append(data.feature2[x])
+			rightdata.feature3.append(data.feature3[x])
+			rightdata.feature4.append(data.feature4[x])
 	return (leftdata, rightdata)
 
 def get_entropy(data):
@@ -95,7 +112,7 @@ def get_entropy(data):
 			elif data.labels[i] == "Iris-viginica":
 				virginica+=1
 	total = versicolor + setosa + virginica
-	entropy = -(versicolor/total*math.log2(versicolor/total) + setosa/total*math.log2(setosa/total) + virginica/total*math.log2(virginica/total))
+	entropy = -(versicolor/total*log(versicolor/total, 2) + setosa/total*log(setosa/total, 2) + virginica/total*log(virginica/total, 2))
 	return entropy
 
 def find_best_threshold(data, feature):
@@ -155,8 +172,8 @@ def c45helper(data, treein):
 		treein.prediction = getPrediction(data)
 		pass
 	left, right = split_data(data, feature, threshold)
-	tree.left = c45helper(left, treein)
-	tree.right = c45helper(right, treein)
+	treein.left = c45helper(left, treein)
+	treein.right = c45helper(right, treein)
 	return treein
 
 def getPrediction(data):
@@ -169,7 +186,7 @@ def getPrediction(data):
 				virginica+=1
 	total = versicolor + setosa + virginica
 	if versicolor/total > setosa/total:
-		if versicolor/total > virginica total:
+		if versicolor/total > virginica/total:
 			return versicolor
 	if setosa/total > versicolor/total:
 		if setosa/total > virginica/total:
@@ -181,13 +198,15 @@ def getPrediction(data):
 
 def test(data, tree):
 	# TODO: given data and a constructed tree - return a list of strings (predicted label for every example in the data)
+	point = []
+	predictions = []
 	for i in data.feature:
 		point[0] = data.feature1[i]
 		point[1] = data.feature2[i]
 		point[2] = data.feature3[i]
 		point[3] = data.feature4[i]
 		point[4] = data.labels[i]
-		predictions.append(prediction(tree, point))
+		predictions.append(predict(tree, point))
 	return predictions
 ###################################################################
 
