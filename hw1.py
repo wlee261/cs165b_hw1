@@ -29,7 +29,7 @@ def read_data(txt_path):
 	data = Data()
 	training_file = open(txt_path,'r')
 	traininglist = training_file.readlines()
-	for i in traininglist:
+	for i in range(len(traininglist)):
 		line_in_traininglist = traininglist[i].split(",")
 		data.feature1.append(line_in_traininglist[0])
 		data.feature2.append(line_in_traininglist[1])
